@@ -1,0 +1,41 @@
+description: GCR Bit Distiller
+
+target:
+  service: sing
+  name: msroctobasicvc
+  workspace_name: srgxws@srgx 
+
+environment:
+  image: amlt-sing/acpt-rocm6.1_ubuntu20.04_py3.9_pytorch2.1.2
+  setup:
+    - bash tools/prepare.sh
+
+code:
+  local_dir: /home/donglinbai/Projects/xxx/BitDistiller-Q4_0/
+
+data:
+  local_dir: /home/donglinbai/Projects/xxx/BitDistiller-Q4_0/data/
+  remote_dir: gcrbitdistillerdata/
+# list of jobs to run, we run 2 jobs in this example
+jobs:
+- name: gcr_wrapper
+  sku: 192G2-MI300X-IB-xGMI
+  command:
+  - bash tools/amlt_wrapper.sh $EXTRA_ARGS
+  - sleep infinity
+  mpi: False
+  process_count_per_node: 0
+  identity: managed
+  submit_args:
+    env:
+      _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e546c811-2312-46e2-9fd0-c949c65da4d9/resourcegroups/srgx/providers/Microsoft.ManagedIdentity/userAssignedIdentities/srgxuai
+- name: test_task
+  sku: 192G1-MI300X-IB-xGMI
+  command:
+  - bash tools/amlt_wrapper.sh $EXTRA_ARGS
+  mpi: False
+  process_count_per_node: 0
+  identity: managed
+  submit_args:
+    env:
+      _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e546c811-2312-46e2-9fd0-c949c65da4d9/resourcegroups/srgx/providers/Microsoft.ManagedIdentity/userAssignedIdentities/srgxuai

@@ -1,0 +1,9 @@
+/.git
+/amlt
+/data/datasets
+/logs
+/quantization/clip_cache
+/test/general
+/plt
+/doc
+/wandb

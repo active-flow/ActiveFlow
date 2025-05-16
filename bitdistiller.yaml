@@ -1,0 +1,50 @@
+description: GCR Bit Distiller
+
+target:
+  service: sing
+  name: msrresrchvc
+  workspace_name: srgxws@srgx
+
+environment:
+  image: amlt-sing/acpt-torch2.3.1-py3.10-cuda12.1-ubuntu22.04
+  setup:
+    - bash tools/prepare.sh
+
+code:
+  local_dir: /home/donglinbai/Projects/xxx/BitDistiller-Q4_0/
+
+data:
+  local_dir: /home/donglinbai/Projects/xxx/BitDistiller-Q4_0/data/
+  remote_dir: gcrbitdistillerdata/
+
+jobs:
+- name: gcr_bitdistiller
+  sku: 80G4-A100
+  command:
+    - bash tools/amlt_wrapper.sh
+    # - sleep infinity
+  mpi: False
+  process_count_per_node: 0
+  identity: managed
+  sla_tier: Premium
+  priority: high  
+  execution_mode: basic
+  submit_args:
+    env:
+      NCCL_DEBUG: info
+      _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e546c811-2312-46e2-9fd0-c949c65da4d9/resourcegroups/srgx/providers/Microsoft.ManagedIdentity/userAssignedIdentities/srgxuai
+- name: gcr_test_task
+  sku: 80G1-A100
+  command:
+    - bash tools/amlt_wrapper.sh
+    # - sleep infinity
+  mpi: False
+  process_count_per_node: 0
+  identity: managed
+  sla_tier: Premium
+  priority: high  
+  execution_mode: basic
+  submit_args:
+    env:
+      NCCL_DEBUG: info
+      _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e546c811-2312-46e2-9fd0-c949c65da4d9/resourcegroups/srgx/providers/Microsoft.ManagedIdentity/userAssignedIdentities/srgxuai

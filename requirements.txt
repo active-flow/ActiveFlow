@@ -1,0 +1,22 @@
+transformers==4.45.2
+datasets
+deepspeed==0.15.4
+torch==2.1.0
+torchvision==0.16.0
+sentencepiece
+tensorboardX
+accelerate==1.6.0
+
+einops
+rouge-score
+sacrebleu
+scikit-learn
+sqlitedict
+zstandard
+
+bitsandbytes==0.44.0
+peft==0.13.1
+fraction
+wandb
+matplotlib
+# unsloth
